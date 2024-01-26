@@ -1,9 +1,8 @@
-#include "Game.hpp"
+#include "BlackJack.hpp"
 
 #include <iostream>
 
 int main() {
-	Game game;
-
+	BlackJack game;
 	return 0;
 }

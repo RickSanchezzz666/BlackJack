@@ -3,10 +3,14 @@
 #include "Dealer.hpp"
 #include "Player.hpp"
 
-Game::Game() {
-	__deck = Deck();
-	__dealer = Dealer(__deck);
-	Player player(__deck);
+#include <string>
+
+Game::Game(std::string name) {
+	if (!name.empty()) {
+		__deck = Deck();
+		__dealer = Dealer(__deck);
+		Player player(__deck, name);
+	}
 }
 
 void Game::updateHandCount(Card card, int& counter) {

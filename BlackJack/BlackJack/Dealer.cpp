@@ -3,7 +3,7 @@
 #include <iostream>
 
 void Dealer::getHand() {
-	std::cout << "Dealer's hand:\n";
+	std::cout << "\nDealer's hand:\n";
 	for (auto card : hand) {
 		std::cout << "Card: " << card.name << " of " << card.suit << ". Cost: " << card.value << std::endl;
 	}
