@@ -1,23 +1,15 @@
 #pragma once
 #include "Deck.hpp"
+#include "Dealer.hpp"
+#include "Player.hpp"
 
-#include <vector>
-
-class Game {
-public: 
-	static void updateHandCount(Card card, int& counter);
-
+class Game : public Dealer, public Player {
 protected:
-	virtual void getHand() = 0;
-	virtual int getCount() = 0;
+	Deck __deck;
+	Dealer __dealer;
 
-	virtual void getCard(Deck& deck) = 0;
-	/*
-	virtual void doubleDownMove();
-	virtual void standMove();
-	virtual void hitMove();
-	virtual void splitMove();
+public:
+	Game();
 
-	virtual void resetDeck();
-	virtual void deckInitialize();*/
+	static void updateHandCount(Card card, int& counter);
 };

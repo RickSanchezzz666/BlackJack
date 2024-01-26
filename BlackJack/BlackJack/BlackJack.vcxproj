@@ -132,7 +132,6 @@
     <ClCompile Include="Dealer.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Game.hpp" />
     <ClCompile Include="jsonRead.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -142,6 +141,7 @@
     <ClInclude Include="BlackJack.hpp" />
     <ClInclude Include="Dealer.hpp" />
     <ClInclude Include="Deck.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="jsonRead.hpp" />
     <ClInclude Include="Player.hpp" />
   </ItemGroup>

@@ -1,25 +1,26 @@
 #pragma once
-#include "Game.hpp"
 #include "Deck.hpp"
 
 #include <vector>
 
-class Dealer : public Game, public Deck {
+class Dealer : public Deck {
 protected:
 	int _scoreCounter = 0;
 	std::vector<Card> hand;
 
 public:
+	Dealer() {};
+
 	Dealer(Deck& deck);
 
-	void getCard(Deck& deck) override;
+	void getCard(Deck& deck);
 	/*
-	void standMove() override;
-	void hitMove() override;
+	void standMove();
+	void hitMove();
 
-	void resetDeck() override;
-	void deckInitialize() override;*/
+	void resetDeck();
+	void deckInitialize();*/
 
-	void getHand() override;
-	int getCount() override;
+	void getHand();
+	int getCount();
 };

@@ -1,13 +1,9 @@
-#include "Deck.hpp"
-#include "Dealer.hpp"
-#include "Player.hpp"
+#include "Game.hpp"
 
 #include <iostream>
 
 int main() {
-	Deck deck;
-	Dealer dealer(deck);
-	Player player(deck);
-	
+	Game game;
+
 	return 0;
 }

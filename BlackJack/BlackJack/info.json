@@ -18,34 +18,44 @@
     },
     "cards_suits": [ "Spades", "Hearts", "Clubs", "Diamonds" ]
   },
-  "game": {
-    "gameClass": {
-      "getCards": "true",
-      "giveCards": "true",
-      "doubleDown": "true",
-      "stand": "true",
-      "hit": "true",
-      "split": "true",
-      "resetDeck": "true",
-      "deckInitialize": "true",
-      "sub-classes": {
-        "dealer": {
-          "cardsValuesCounter": "true",
+  "blackjack": {
+    "createGame": "true",
+    "addPlayer": "true",
+    "playerName":  "true",
+    "sub-classes": {
+      "balance": {
+        "balance":  "true"
+      },
+      "game": {
+        "gameClass": {
           "getCards": "true",
           "giveCards": "true",
-          "doubleDown": "false",
-          "hit": "false",
-          "take": "true",
-          "split": "false"
-        },
-        "player": {
-          "cardsValuesCounter": "true",
-          "getCards": "true",
-          "giveCards": "false",
           "doubleDown": "true",
+          "stand": "true",
           "hit": "true",
-          "take": "true",
-          "split": "true"
+          "split": "true",
+          "resetDeck": "true",
+          "deckInitialize": "true",
+          "sub-classes": {
+            "dealer": {
+              "cardsValuesCounter": "true",
+              "getCards": "true",
+              "giveCards": "true",
+              "doubleDown": "false",
+              "hit": "false",
+              "take": "true",
+              "split": "false"
+            },
+            "player": {
+              "cardsValuesCounter": "true",
+              "getCards": "true",
+              "giveCards": "false",
+              "doubleDown": "true",
+              "hit": "true",
+              "take": "true",
+              "split": "true"
+            }
+          }
         }
       }
     }

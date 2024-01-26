@@ -9,12 +9,13 @@
 #include <random>
 
 Deck::Deck() {
-	__initializeDeck();
+	__deck = __initializeDeck();
 }
 
-void Deck::__initializeDeck() {
+std::vector<Card> Deck::__initializeDeck() {
 	try {
 		nlohmann::json info = readJson("info.json");
+		std::vector<Card> __deck;
 		for (std::string x : info["deck"]["cards_suits"]) {
 			for (auto card : info["deck"]["cards"]) {
 				std::string name = card[0];
@@ -27,12 +28,15 @@ void Deck::__initializeDeck() {
 				__deck.push_back(card);
 			}
 		}
+		return __deck;
 	}
 	catch (std::string& err) {
 		std::cerr << "Error! JSON file is not opened!: " << err << std::endl;
+		return {};
 	}
 	catch (std::exception& err) {
 		std::cerr << "Error occured while opening JSON file!: " << err.what() << std::endl;
+		return {};
 	}
 }
 

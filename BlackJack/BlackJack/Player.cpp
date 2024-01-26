@@ -23,5 +23,5 @@ Player::Player(Deck& deck) {
 }
 
 void Player::getCard(Deck& deck) {
-	hand.push_back(__getCardFromDeck(deck, _scoreCounter));
+	hand.push_back(Deck::__getCardFromDeck(deck, _scoreCounter));
 }

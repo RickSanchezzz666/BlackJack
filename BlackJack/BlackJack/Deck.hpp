@@ -20,11 +20,11 @@ class Deck {
 protected:
 	std::vector<Card> __deck;
 
-	void __initializeDeck();
+	std::vector<Card> __initializeDeck();
 	void __resetDeck();
-
-	Card __getCardFromDeck(Deck& deck, int& counter);
 
 public:
 	Deck();
+
+	static Card __getCardFromDeck(Deck& deck, int& counter);
 };
