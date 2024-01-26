@@ -127,17 +127,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Balance.cpp" />
+    <ClCompile Include="BlackJack.cpp" />
     <ClCompile Include="Dealer.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game.hpp" />
     <ClCompile Include="jsonRead.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Balance.hpp" />
+    <ClInclude Include="BlackJack.hpp" />
     <ClInclude Include="Dealer.hpp" />
     <ClInclude Include="Deck.hpp" />
     <ClInclude Include="jsonRead.hpp" />
+    <ClInclude Include="Player.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="info.json" />

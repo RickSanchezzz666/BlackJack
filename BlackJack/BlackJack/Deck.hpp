@@ -17,8 +17,14 @@ struct Card {
 };
 
 class Deck {
-private:
+protected:
 	std::vector<Card> __deck;
+
+	void __initializeDeck();
+	void __resetDeck();
+
+	Card __getCardFromDeck(Deck& deck, int& counter);
+
 public:
 	Deck();
 };
