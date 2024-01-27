@@ -47,6 +47,7 @@
               "split": "false"
             },
             "player": {
+              "balance": "true",
               "cardsValuesCounter": "true",
               "getCards": "true",
               "giveCards": "false",

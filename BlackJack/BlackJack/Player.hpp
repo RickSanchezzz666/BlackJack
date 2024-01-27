@@ -1,6 +1,7 @@
 #pragma once
 #include "Deck.hpp"
 #include "Balance.hpp"
+#include "Status.hpp"
 
 #include <vector>
 #include <string>
@@ -14,20 +15,25 @@ protected:
 	std::string _name = "";
 
 public:
-	Player() {};
+	Status playerStatus;
+
+	Player() : hand({}), playerStatus(Status::FINISHED) {};
 
 	Player(Deck& deck, std::string& name);
 
 	void setPlayerName(std::string& name);
 
-	void getCard(Deck& deck);
+	void getPlayerCard(Deck& deck);
 
-	void getHand();
-	int getCount();
+	void getPlayerHand();
+	int getPlayerCount();
+
+	std::string getPlayerName();
+
+	Card hitMovePlayer(Deck& deck);
 
 	/*
-	void standMove();
-	void hitMove();
+
 	void doubleDownMove();
 	void splitMove();*/
 };

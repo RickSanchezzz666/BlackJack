@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actions.cpp" />
+    <ClCompile Include="Actions.hpp" />
     <ClCompile Include="Balance.cpp" />
     <ClCompile Include="BlackJack.cpp" />
     <ClCompile Include="Dealer.cpp" />
@@ -135,6 +137,7 @@
     <ClCompile Include="jsonRead.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Status.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Balance.hpp" />

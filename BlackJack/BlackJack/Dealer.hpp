@@ -1,5 +1,6 @@
 #pragma once
 #include "Deck.hpp"
+#include "Status.hpp"
 
 #include <vector>
 
@@ -9,11 +10,14 @@ protected:
 	std::vector<Card> hand;
 
 public:
-	Dealer() {};
+	Status dealerStatus;
+
+	Dealer() : hand({}), dealerStatus(Status::FINISHED) {};
 
 	Dealer(Deck& deck);
 
-	void getCard(Deck& deck);
+	void getDealerCard(Deck& deck);
+
 	/*
 	void standMove();
 	void hitMove();
@@ -21,6 +25,6 @@ public:
 	void resetDeck();
 	void deckInitialize();*/
 
-	void getHand();
-	int getCount();
+	void getDealerHand();
+	int getDealerCount();
 };
