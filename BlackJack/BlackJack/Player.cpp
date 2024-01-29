@@ -29,7 +29,7 @@ Player::Player(Deck& deck, std::string& name) {
 	getPlayerCard(deck);
 	getPlayerCard(deck);
 	getPlayerHand();
-	std::cout << "Player: '" << _name << "' count: " << getPlayerCount() << std::endl;
+	std::cout << "Player: '" << _name << "' count: " << getPlayerCount() << "\n\n";
 }
 
 void Player::setPlayerName(std::string& name) {

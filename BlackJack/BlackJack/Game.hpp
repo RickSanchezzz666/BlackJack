@@ -10,6 +10,7 @@
 enum class GameStatus {
 	FINISHED,
 	PROGRESS,
+	FINISHING,
 	DEALER_WIN,
 	PLAYER_WIN,
 	TIE
@@ -30,6 +31,8 @@ private:
 
 	bool setSession(bool& _session, bool type);
 
+	void __endGameOutput(Game& _game, GameStatus status);
+
 
 public:
 	Game() : __gameStatus(GameStatus::FINISHED) {};
@@ -41,6 +44,8 @@ public:
 	GameStatus doActionPlayer(Game& _game);
 
 	GameStatus checkPlayersScores(Game& _game);
+
+	void gameEnder(Game& _game);
 
 	GameStatus checkGameStatus(Game& _game);
 
