@@ -1,14 +1,24 @@
 #include "Player.hpp"
 #include "Deck.hpp"
+#include "Game.hpp"
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 void Player::getPlayerHand() {
 	std::cout << "\nPlayer: '" << _name << "' hand:\n";
 	for (auto card : hand) {
 		std::cout << "Card: " << card.name << " of " << card.suit << ". Cost: " << card.value << std::endl;
 	}
+}
+
+void Player::updatePlayerCount(int val) {
+	Game::updateHandCount(val, _scoreCounter);
+}
+
+std::vector<Card>  Player::getPlayerHand(bool aceCheck) {
+	return hand;
 }
 
 int Player::getPlayerCount() {

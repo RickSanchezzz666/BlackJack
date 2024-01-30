@@ -21,10 +21,10 @@
   "blackjack": {
     "createGame": "true",
     "addPlayer": "true",
-    "playerName":  "true",
+    "playerName": "true",
     "sub-classes": {
       "balance": {
-        "balance":  "true"
+        "balance": "true"
       },
       "game": {
         "gameClass": {
@@ -60,5 +60,9 @@
         }
       }
     }
+  },
+  "rules": {
+    "dealers_turn": "Keep hitting until HARD 16 or SOFT 17(1/11 - A)",
+    "overall": "An Ace will have a value of 11 unless that would give a player or the dealer a score in excess of 21; in which case, it has a value of 1."
   }
 }

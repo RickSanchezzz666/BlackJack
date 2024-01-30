@@ -24,14 +24,19 @@ private:
 
 	int __currentSession = false;
 
-	void doActionDealer();
-
 	void setPlayerStatus(Status &player, Status statusType);
 	void setGameStatus(Game& _game, GameStatus statusType);
 
 	bool setSession(bool& _session, bool type);
 
 	void __endGameOutput(Game& _game, GameStatus status);
+
+	void __swapAceValues(Game& _game, int player);
+
+	bool __checkForAce(Game& _game);
+	void __balanceAce(Game& _game, bool& balanceNeed);
+
+	bool __balanceNeed = false;
 
 
 public:
@@ -43,6 +48,8 @@ public:
 
 	GameStatus doActionPlayer(Game& _game);
 
+	//GameStatus doActionDealer(Game& _game);
+
 	GameStatus checkPlayersScores(Game& _game);
 
 	void gameEnder(Game& _game);
@@ -50,6 +57,7 @@ public:
 	GameStatus checkGameStatus(Game& _game);
 
 	static void updateHandCount(Card card, int& counter);
+	static void updateHandCount(int aceValue, int& counter);
 
 	void prepareGame(Game& _game, bool& _session);
 

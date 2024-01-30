@@ -27,4 +27,8 @@ public:
 
 	void getDealerHand();
 	int getDealerCount();
+
+	std::vector<Card> getDealerHand(bool aceCheck);
+
+	void updateDealerCount(int val);
 };
