@@ -34,8 +34,33 @@ std::string Player::getPlayerName() {
 	return _name;
 }
 
+void Player::__updateStake(int stake) {
+	playerStake = stake;
+}
+
+void Player::__makeStake() {
+	short stake;
+	std::cout << "\nEnter your stake: ";
+	try { std::cin >> stake; }
+	catch (const std::exception&) {
+		std::cerr << "\nWrong type of data! Try again!";
+		return __makeStake();
+	}
+	if (stake <= 0) {
+		std::cerr << "\nStake must be above 0! Try again!";
+		return __makeStake();
+	}
+	if (stake > getBalance(balance)) {
+		std::cerr << "\nYou dont have enough money to make a stake! Try again!";
+		return __makeStake();
+	}
+	__updateStake(stake);
+	updateBalance(balance, -stake);
+}
+
 Player::Player(Deck& deck, std::string& name) {
 	setPlayerName(name);
+	__makeStake();
 	getPlayerCard(deck);
 	getPlayerCard(deck);
 	getPlayerHand();

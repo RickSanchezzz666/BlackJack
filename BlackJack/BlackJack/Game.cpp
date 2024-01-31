@@ -103,8 +103,9 @@ void Game::prepareGame(Game &_game, bool &_session) {
 	string name = "";
 	std::getline(std::cin, name);
 	cout << "Hi " << name << ", now we are gonna start the first game!\n";
-	cout << "Your initial balance is: " << getBalance() << std::endl;
+	cout << "Your initial balance is: " << getBalance(_game.__player.balance) << std::endl;
 	_game = createGame(name);
+
 	__checkForAce(_game);
 	__balanceAce(_game, _game.__balanceNeed);
 	_game.__currentSession = setSession(_session, true);
@@ -217,14 +218,18 @@ void Game::__endGameOutput(Game& _game, GameStatus status) {
 	case GameStatus::PLAYER_WIN:
 		cout << "\nThe Player Won! Player's Score: " << _game.__player.getPlayerCount();
 		cout << "\nDealer's score: " << _game.__dealer.getDealerCount() << endl;
+		if (_game.__player.playerStatus == Status::BLACKJACK) _game.__player.updateBalance(_game.__player.balance, _game.__player.playerStake * 2.5);
+		else _game.__player.updateBalance(_game.__player.balance, _game.__player.playerStake * 2);
 		break;
 	case GameStatus::TIE:
 		cout << "\nGame ended in Tie! Dealer's score: " << _game.__dealer.getDealerCount();
 		cout << "\nPlayer's Score: " << _game.__player.getPlayerCount() << endl;
+		_game.__player.updateBalance(_game.__player.balance, _game.__player.playerStake);
 		break;
 	default:
 		break;
 	}
+	cout << "Your balance is: " << _game.__player.getBalance(_game.__player.balance) << endl;
 }
 
 

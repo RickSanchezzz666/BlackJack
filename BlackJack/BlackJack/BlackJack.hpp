@@ -9,7 +9,5 @@ protected:
 public:
 	BlackJack();
 
-	int getBalance();
-
 	void startBlackJackGame();
 };

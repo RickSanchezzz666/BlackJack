@@ -6,8 +6,8 @@ private:
 public:
 	Balance();
 
-	void resetBalance();
-	const int getBalance();
-	void updateBalance(int value);
-	bool checkBalance();
+	void resetBalance(Balance& balance);
+	const int getBalance(Balance& balance);
+	void updateBalance(Balance& balance, int value);
+	bool checkBalance(Balance& balance);
 };

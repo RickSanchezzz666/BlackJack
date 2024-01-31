@@ -8,13 +8,20 @@
 
 class Player : public Balance {
 protected:
-	Balance _balance;
 	int _scoreCounter = 0;
 	std::vector<Card> hand;
 
 	std::string _name = "";
 
+	void __updateStake(int stake);
+
+	void __makeStake();
+
 public:
+	Balance balance;
+
+	int playerStake = 0;
+
 	Status playerStatus;
 
 	Player() : hand({}), playerStatus(Status::FINISHED) {};
