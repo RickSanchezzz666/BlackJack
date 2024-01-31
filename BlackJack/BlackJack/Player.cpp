@@ -17,7 +17,7 @@ void Player::updatePlayerCount(int val) {
 	Game::updateHandCount(val, _scoreCounter);
 }
 
-std::vector<Card>  Player::getPlayerHand(bool aceCheck) {
+std::vector<Card>& Player::getPlayerHand(bool aceCheck) {
 	return hand;
 }
 

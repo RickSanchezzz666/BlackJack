@@ -20,7 +20,7 @@
   },
   "blackjack": {
     "createGame": "true",
-    "addPlayer": "true",
+    "addPlayer": "false",
     "playerName": "true",
     "sub-classes": {
       "balance": {

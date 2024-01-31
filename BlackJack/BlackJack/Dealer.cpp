@@ -15,7 +15,7 @@ void Dealer::updateDealerCount(int val) {
 	Game::updateHandCount(val, _scoreCounter);
 }
 
-std::vector<Card> Dealer::getDealerHand(bool aceCheck) {
+std::vector<Card>& Dealer::getDealerHand(bool aceCheck) {
 	return hand;
 }
 
@@ -32,4 +32,9 @@ Dealer::Dealer(Deck& deck){
 
 void Dealer::getDealerCard(Deck& deck) {
 	hand.push_back(__getCardFromDeck(deck, _scoreCounter));
+}
+
+Card Dealer::hitMoveDealer(Deck& deck) {
+	getDealerCard(deck);
+	return hand[hand.size() - 1];
 }

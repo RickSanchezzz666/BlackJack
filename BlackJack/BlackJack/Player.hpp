@@ -25,9 +25,9 @@ public:
 
 	void getPlayerCard(Deck& deck);
 
+	
 	void updatePlayerCount(int val);
-
-	std::vector<Card> getPlayerHand(bool aceCheck);
+	std::vector<Card>& getPlayerHand(bool aceCheck);
 	void getPlayerHand();
 	int getPlayerCount();
 

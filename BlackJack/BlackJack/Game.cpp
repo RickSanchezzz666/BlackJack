@@ -60,7 +60,7 @@ bool Game::__checkForAce(Game& _game) {
 
 void Game::__swapAceValues(Game& _game, int player) {
 	if (player == 0) {
-		for (auto card : _game.__dealer.getDealerHand(true)) {
+		for (auto &card : _game.__dealer.getDealerHand(true)) {
 			if (card.shortName == "A") {
 				int dealerCount = _game.__dealer.getDealerCount();
 				if (dealerCount > 21 && card.value == 11) {
@@ -71,7 +71,7 @@ void Game::__swapAceValues(Game& _game, int player) {
 		}
 	}
 	else {
-		for (auto card : _game.__player.getPlayerHand(true)) {
+		for (auto &card : _game.__player.getPlayerHand(true)) {
 			if (card.shortName == "A") {
 				int playerCount = _game.__player.getPlayerCount();
 				if (playerCount > 21 && card.value == 11) {
@@ -101,7 +101,7 @@ void Game::prepareGame(Game &_game, bool &_session) {
 	using namespace std;
 	cout << "Welcome to game BlackJack!\nEnter your name please: ";
 	string name = "";
-	cin >> name;
+	std::getline(std::cin, name);
 	cout << "Hi " << name << ", now we are gonna start the first game!\n";
 	cout << "Your initial balance is: " << getBalance() << std::endl;
 	_game = createGame(name);
@@ -189,7 +189,7 @@ GameStatus Game::startGame(Game& _game) {
 
 		if (_game.__gameStatus == GameStatus::PROGRESS) {
 			std::cout << "\nDealer's Turn:\n";
-			//doActionDealer();
+			doActionDealer(_game);
 			__balanceAce(_game, _game.__balanceNeed);
 		}
 		if (_game.__gameStatus == GameStatus::PROGRESS) {
@@ -237,8 +237,8 @@ GameStatus Game::doActionPlayer(Game& _game) {
 	switch (actionType)
 	{
 	case Actions::HIT: {
-		Card newCard = _game.__player.hitMovePlayer(__deck);
-		cout << "\nYou got: " << newCard.name << " of " << newCard.suit << ". Cost: " << newCard.value << std::endl;
+		Card newCard = _game.__player.hitMovePlayer(_game.__deck);
+		cout << "\nPlayer got: " << newCard.name << " of " << newCard.suit << ". Cost: " << newCard.value << std::endl;
 		//("/" + newCard.addValue ? newCard.shortName == "A" : "")
 		__checkForAce(_game);
 		__balanceAce(_game, _game.__balanceNeed);
@@ -262,28 +262,38 @@ GameStatus Game::doActionPlayer(Game& _game) {
 	}
 }
 
-/*GameStatus Game::doActionDealer(Game& _game) {
+GameStatus Game::doActionDealer(Game& _game) {
 	using namespace std;
 	short action;
+	short dealersCount = _game.__dealer.getDealerCount();
+	if (dealersCount == 17 && _game.__balanceNeed == true) {
+		for (auto& card : _game.__dealer.getDealerHand(true)) {
+			if (card.shortName == "A" && card.value == 11) action = 1;
+		}
+	}
+	if (dealersCount > 16) {
+		action = 2;
+	} else action = 1;
 	Actions actionType = getActionType(action);
 	switch (actionType)
 	{
 	case Actions::HIT: {
-		Card newCard = _game.__player.hitMovePlayer(__deck);
-		cout << "\nYou got: " << newCard.name << " of " << newCard.suit << ". Cost: " << newCard.value << std::endl;
-		_game.__player.getPlayerHand();
-		std::cout << "Player: '" << _game.__player.getPlayerName() << "' count: " << _game.__player.getPlayerCount() << std::endl;
+		Card newCard = _game.__dealer.hitMoveDealer(_game.__deck);
+		cout << "\nDealer got: " << newCard.name << " of " << newCard.suit << ". Cost: " << newCard.value << std::endl;
+		//("/" + newCard.addValue ? newCard.shortName == "A" : "")
+		__checkForAce(_game);
+		__balanceAce(_game, _game.__balanceNeed);
+		_game.__dealer.getDealerHand();
+		std::cout << "Dealer: count: " << _game.__dealer.getDealerCount() << std::endl;
 		if (checkPlayersScores(_game) != GameStatus::PROGRESS) return _game.__gameStatus;
-		else return doActionPlayer(_game);
+		else return doActionDealer(_game);
 		break;
 	}
 	case Actions::STAND:
-		cout << "You chose to stand!\n";
 		break;
-	case Actions::DOUBLE_DOWN:
-		break;
-	case Actions::SPLIT:
+	default:
+		return doActionDealer(_game);
 		break;
 	}
-}*/
+}
 

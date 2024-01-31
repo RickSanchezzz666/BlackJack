@@ -48,7 +48,7 @@ public:
 
 	GameStatus doActionPlayer(Game& _game);
 
-	//GameStatus doActionDealer(Game& _game);
+	GameStatus doActionDealer(Game& _game);
 
 	GameStatus checkPlayersScores(Game& _game);
 

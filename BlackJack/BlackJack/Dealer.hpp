@@ -17,10 +17,9 @@ public:
 	Dealer(Deck& deck);
 
 	void getDealerCard(Deck& deck);
+	Card hitMoveDealer(Deck& deck);
 
 	/*
-	void standMove();
-	void hitMove();
 
 	void resetDeck();
 	void deckInitialize();*/
@@ -28,7 +27,7 @@ public:
 	void getDealerHand();
 	int getDealerCount();
 
-	std::vector<Card> getDealerHand(bool aceCheck);
+	std::vector<Card>& getDealerHand(bool aceCheck);
 
 	void updateDealerCount(int val);
 };
