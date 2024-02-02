@@ -15,18 +15,16 @@ protected:
 
 	void __updateStake(int stake);
 
-	void __makeStake();
+	void __makeStake(Balance& _balance);
 
 public:
-	Balance balance;
-
 	int playerStake = 0;
 
 	Status playerStatus;
 
 	Player() : hand({}), playerStatus(Status::FINISHED) {};
 
-	Player(Deck& deck, std::string& name);
+	Player(Deck& deck, std::string& name, Balance& _balance);
 
 	void setPlayerName(std::string& name);
 

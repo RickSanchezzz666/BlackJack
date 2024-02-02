@@ -7,4 +7,6 @@ enum class Actions {
 	SPLIT
 };
 
-Actions getActionType(short int num);
+
+Actions getActionType(int num);
+

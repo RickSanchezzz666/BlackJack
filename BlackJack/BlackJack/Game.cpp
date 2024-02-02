@@ -22,11 +22,11 @@ bool Game::setSession(bool &_session, bool type) {
 	return type;
 }
 
-Game::Game(std::string name) {
+Game::Game(std::string name, Balance& _balance) {
 	if (!name.empty()) {
 		__deck = Deck();
 		__dealer = Dealer(__deck);
-		__player = Player(__deck, name);
+		__player = Player(__deck, name, _balance);
 	}
 }
 
@@ -97,14 +97,11 @@ void Game::__balanceAce(Game& _game, bool& balanceNeed) {
 	}
 }
 
-void Game::prepareGame(Game &_game, bool &_session) {
+void Game::prepareGame(Game &_game, bool &_session, Balance& _balance, std::string& name) {
 	using namespace std;
-	cout << "Welcome to game BlackJack!\nEnter your name please: ";
-	string name = "";
-	std::getline(std::cin, name);
 	cout << "Hi " << name << ", now we are gonna start the first game!\n";
-	cout << "Your initial balance is: " << getBalance(_game.__player.balance) << std::endl;
-	_game = createGame(name);
+	cout << "Your initial balance is: " << getBalance(_balance) << std::endl;
+	_game = createGame(name, _balance);
 
 	__checkForAce(_game);
 	__balanceAce(_game, _game.__balanceNeed);
@@ -112,11 +109,11 @@ void Game::prepareGame(Game &_game, bool &_session) {
 	setPlayerStatus(_game.__dealer.dealerStatus, Status::PROGRESS);
 	setPlayerStatus(_game.__player.playerStatus, Status::PROGRESS);
 	setGameStatus(_game, GameStatus::PROGRESS);
-	startGame(_game);
+	startGame(_game, _session, _balance);
 }
 
-Game Game::createGame(std::string& name) {
-	Game game(name);
+Game Game::createGame(std::string& name, Balance& _balance) {
+	Game game(name, _balance);
 	return game;
 }
 
@@ -181,7 +178,7 @@ GameStatus Game::checkGameStatus(Game& _game) {
 	return GameStatus::PROGRESS;
 }
 
-GameStatus Game::startGame(Game& _game) {
+GameStatus Game::startGame(Game& _game, bool& _session, Balance& _balance) {
 	if (_game.__currentSession) {
 		if (checkPlayersScores(_game) != GameStatus::PROGRESS) return _game.__gameStatus;
 		std::cout << "\nPlayer's Turn:\n";
@@ -196,18 +193,22 @@ GameStatus Game::startGame(Game& _game) {
 		if (_game.__gameStatus == GameStatus::PROGRESS) {
 			setGameStatus(_game, GameStatus::FINISHING);
 		}
-		gameEnder(_game);
+		gameEnder(_game, _session, _balance);
 	}
 }
 
-void Game::gameEnder(Game& _game) {
+void Game::gameEnder(Game& _game, bool& _session, Balance& _balance) {
 	if (_game.__currentSession) {
 		checkPlayersScores(_game);
-		__endGameOutput(_game, _game.__gameStatus);
+		__endGameOutput(_game, _game.__gameStatus, _balance);
+		_game.__currentSession = setSession(_session, false);
+		setPlayerStatus(_game.__dealer.dealerStatus, Status::FINISHED);
+		setPlayerStatus(_game.__player.playerStatus, Status::FINISHED);
+		setGameStatus(_game, GameStatus::FINISHED);
 	}
 }
 
-void Game::__endGameOutput(Game& _game, GameStatus status) {
+void Game::__endGameOutput(Game& _game, GameStatus status, Balance& _balance) {
 	using namespace std;
 	switch (status)
 	{
@@ -218,25 +219,25 @@ void Game::__endGameOutput(Game& _game, GameStatus status) {
 	case GameStatus::PLAYER_WIN:
 		cout << "\nThe Player Won! Player's Score: " << _game.__player.getPlayerCount();
 		cout << "\nDealer's score: " << _game.__dealer.getDealerCount() << endl;
-		if (_game.__player.playerStatus == Status::BLACKJACK) _game.__player.updateBalance(_game.__player.balance, _game.__player.playerStake * 2.5);
-		else _game.__player.updateBalance(_game.__player.balance, _game.__player.playerStake * 2);
+		if (_game.__player.playerStatus == Status::BLACKJACK) _balance.updateBalance(_balance, _game.__player.playerStake * 2.5);
+		else _balance.updateBalance(_balance, _game.__player.playerStake * 2);
 		break;
 	case GameStatus::TIE:
 		cout << "\nGame ended in Tie! Dealer's score: " << _game.__dealer.getDealerCount();
 		cout << "\nPlayer's Score: " << _game.__player.getPlayerCount() << endl;
-		_game.__player.updateBalance(_game.__player.balance, _game.__player.playerStake);
+		_balance.updateBalance(_balance, _game.__player.playerStake);
 		break;
 	default:
 		break;
 	}
-	cout << "Your balance is: " << _game.__player.getBalance(_game.__player.balance) << endl;
+	cout << "Your balance is: " << _balance.getBalance(_balance) << endl;
 }
 
 
 GameStatus Game::doActionPlayer(Game& _game) {
 	using namespace std;
 	cout << "\nChoose next action: \n1. Hit\n2. Stand\n3. Double Down\n4. Split\nEnter number: ";
-	short action;
+	int action;
 	cin >> action;
 	Actions actionType = getActionType(action);
 	switch (actionType)
@@ -269,7 +270,7 @@ GameStatus Game::doActionPlayer(Game& _game) {
 
 GameStatus Game::doActionDealer(Game& _game) {
 	using namespace std;
-	short action;
+	int action;
 	short dealersCount = _game.__dealer.getDealerCount();
 	if (dealersCount == 17 && _game.__balanceNeed == true) {
 		for (auto& card : _game.__dealer.getDealerHand(true)) {

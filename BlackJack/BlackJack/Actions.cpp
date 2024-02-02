@@ -1,6 +1,6 @@
 #include "Actions.hpp"
 
-Actions getActionType(short int num) {
+Actions getActionType(int num) {
 	switch (num)
 	{
 	case 1:

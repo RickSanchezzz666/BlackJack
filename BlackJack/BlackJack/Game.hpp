@@ -29,7 +29,7 @@ private:
 
 	bool setSession(bool& _session, bool type);
 
-	void __endGameOutput(Game& _game, GameStatus status);
+	void __endGameOutput(Game& _game, GameStatus status, Balance& _balance);
 
 	void __swapAceValues(Game& _game, int player);
 
@@ -42,7 +42,7 @@ private:
 public:
 	Game() : __gameStatus(GameStatus::FINISHED) {};
 
-	Game(std::string name);
+	Game(std::string name, Balance& _balance);
 
 	GameStatus __gameStatus = GameStatus::FINISHED;
 
@@ -52,16 +52,16 @@ public:
 
 	GameStatus checkPlayersScores(Game& _game);
 
-	void gameEnder(Game& _game);
+	void gameEnder(Game& _game, bool& _session, Balance& _balance);
 
 	GameStatus checkGameStatus(Game& _game);
 
 	static void updateHandCount(Card card, int& counter);
 	static void updateHandCount(int aceValue, int& counter);
 
-	void prepareGame(Game& _game, bool& _session);
+	void prepareGame(Game& _game, bool& _session, Balance& _balance, std::string& _name);
 
-	Game createGame(std::string& name);
+	Game createGame(std::string& name, Balance& _balance);
 
-	GameStatus startGame(Game& _game);
+	GameStatus startGame(Game& _game, bool& _session, Balance& _balance);
 };

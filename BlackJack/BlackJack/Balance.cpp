@@ -13,7 +13,7 @@ const int Balance::getBalance(Balance& balance) {
 }
 
 bool Balance::checkBalance(Balance& balance) {
-	return balance.__balance > 0 ? true : false;
+	return balance.__balance >= 0 ? true : false;
 }
 
 void Balance::updateBalance(Balance& balance, int value) {
