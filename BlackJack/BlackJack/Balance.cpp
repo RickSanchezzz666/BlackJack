@@ -16,6 +16,11 @@ bool Balance::checkBalance(Balance& balance) {
 	return balance.__balance > 0 ? true : false;
 }
 
+bool Balance::checkBalance(Balance& balance, int stake) {
+	return balance.__balance - stake >= 0 ? true : false;
+}
+
+
 void Balance::updateBalance(Balance& balance, int value) {
 	balance.__balance += value;
 	if (!checkBalance(balance)) std::cerr << "\nPlayer's balance is below 0!\n";

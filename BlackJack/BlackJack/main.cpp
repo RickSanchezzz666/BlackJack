@@ -20,6 +20,8 @@ int main() {
 			std::cout << "\nShutting down the program!\n";
 			break;
 		default:
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cout << "\nWrong action.Try again!\n";
 			break;
 		}

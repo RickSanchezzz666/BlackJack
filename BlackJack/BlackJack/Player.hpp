@@ -41,7 +41,6 @@ public:
 	Card hitMovePlayer(Deck& deck);
 
 	/*
-
 	void doubleDownMove();
 	void splitMove();*/
 };

@@ -10,4 +10,6 @@ public:
 	const int getBalance(Balance& balance);
 	void updateBalance(Balance& balance, int value);
 	bool checkBalance(Balance& balance);
+
+	bool checkBalance(Balance& balance, int stake);
 };

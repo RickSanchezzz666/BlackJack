@@ -19,10 +19,6 @@ public:
 	void getDealerCard(Deck& deck);
 	Card hitMoveDealer(Deck& deck);
 
-	/*
-
-	void resetDeck();
-	void deckInitialize();*/
 
 	void getDealerInitialHand();
 	int getDealerInitialCount();

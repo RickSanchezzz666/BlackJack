@@ -34,8 +34,9 @@ Game::Game(std::string name, Balance& _balance) {
 int Game::__checkStake(Balance& _balance) {
 	int stake;
 	std::cout << "\nEnter your stake: ";
-	try { std::cin >> stake; }
-	catch (const std::exception&) {
+	if (!(std::cin >> stake)) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::cerr << "\nWrong type of data! Try again!";
 		return __checkStake(_balance);
 	}
@@ -48,6 +49,10 @@ int Game::__checkStake(Balance& _balance) {
 		return __checkStake(_balance);
 	}
 	return stake;
+}
+
+bool Game::__checkStake(Game& _game, Balance& _balance) {
+	return _balance.checkBalance(_balance, _game.__player.playerStake);
 }
 
 void Game::updateHandCount(Card card, int& counter) {
@@ -126,6 +131,7 @@ void Game::prepareGame(Game &_game, bool &_session, Balance& _balance, std::stri
 	__checkForAce(_game);
 	__balanceAce(_game, _game.__balanceNeed);
 	_game.__currentSession = setSession(_session, true);
+	_game.doubleDownStatus = false;
 	setPlayerStatus(_game.__dealer.dealerStatus, Status::PROGRESS);
 	setPlayerStatus(_game.__player.playerStatus, Status::PROGRESS);
 	setGameStatus(_game, GameStatus::PROGRESS);
@@ -255,32 +261,46 @@ void Game::__endGameOutput(Game& _game, GameStatus status, Balance& _balance) {
 }
 
 
-GameStatus Game::doActionPlayer(Game& _game, Balance& _balance) {
+GameStatus Game::doActionPlayer(Game& _game, Balance& _balance, int action) {
 	using namespace std;
-	cout << "\nChoose next action: \n1. Hit\n2. Stand\n3. Double Down\n4. Split\nEnter number: ";
-	int action;
-	cin >> action;
+	if (action == -1) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		cout << "\nChoose next action: \n1. Hit\n2. Stand\n3. Double Down\n4. Split\nEnter number: ";
+		cin >> action;
+	}
 	Actions actionType = getActionType(action);
 	switch (actionType)
 	{
 	case Actions::HIT: {
 		Card newCard = _game.__player.hitMovePlayer(_game.__deck);
-		cout << "\nPlayer got: " << newCard.name << " of " << newCard.suit << ". Cost: " << newCard.value << std::endl;
+		cout << "\nPlayer got: " << newCard.name << " of " << newCard.suit << ". Cost: " << newCard.value << endl;
 		//("/" + newCard.addValue ? newCard.shortName == "A" : "")
 		__checkForAce(_game);
 		__balanceAce(_game, _game.__balanceNeed);
 		_game.__playerSession++;
 		_game.__player.getPlayerHand();
-		std::cout << "Player: '" << _game.__player.getPlayerName() << "' count: " << _game.__player.getPlayerCount() << std::endl;
-		if (checkPlayersScores(_game, _balance) != GameStatus::PROGRESS) return _game.__gameStatus;
+		cout << "Player: '" << _game.__player.getPlayerName() << "' count: " << _game.__player.getPlayerCount() << endl;
+		if (checkPlayersScores(_game, _balance) != GameStatus::PROGRESS || _game.doubleDownStatus == true) return _game.__gameStatus;
 		else return doActionPlayer(_game, _balance);
 		break;
 	}
 	case Actions::STAND:
 		cout << "You chose to stand!\n";
 		break;
-	case Actions::DOUBLE_DOWN:
+	case Actions::DOUBLE_DOWN: {
+		if (!__checkStake(_game, _balance)) {
+			cerr << "\nNot enough money to Double Down! Try again!";
+			return doActionPlayer(_game, _balance);
+		}
+		cout << "\nPlayer choosed to Double Down!\n";
+		_balance.updateBalance(_balance, -_game.__player.playerStake);
+		_game.__player.playerStake *= 2;
+		_game.doubleDownStatus = true;
+		_game.__playerSession++;
+		return doActionPlayer(_game, _balance, 1);
 		break;
+	}
 	case Actions::SPLIT:
 		break;
 	default:
