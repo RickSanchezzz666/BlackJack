@@ -7,11 +7,12 @@ class BlackJack : public Game {
 protected:
 	bool _session = false;
 	Game _game;
-	Balance _balance;
 	std::string _name = "";
 
 public:
 	BlackJack();
+
+	Balance balance;
 
 	void startBlackJackGame();
 };

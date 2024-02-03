@@ -6,6 +6,7 @@ int main() {
 	BlackJack game;
 	bool session = true;
 	while (session) {
+		if (game.balance.checkBalance(game.balance) == false) break;
 		std::cout << "\nChoose what you gonna do next:\n1. Start new game.\n2. Exit the programm\nEnter num: ";
 		short action;
 		std::cin >> action;

@@ -24,6 +24,9 @@ public:
 	void resetDeck();
 	void deckInitialize();*/
 
+	void getDealerInitialHand();
+	int getDealerInitialCount();
+
 	void getDealerHand();
 	int getDealerCount();
 

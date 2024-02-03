@@ -38,29 +38,14 @@ void Player::__updateStake(int stake) {
 	playerStake = stake;
 }
 
-void Player::__makeStake(Balance& _balance) {
-	short stake;
-	std::cout << "\nEnter your stake: ";
-	try { std::cin >> stake; }
-	catch (const std::exception&) {
-		std::cerr << "\nWrong type of data! Try again!";
-		return __makeStake(_balance);
-	}
-	if (stake <= 0) {
-		std::cerr << "\nStake must be above 0! Try again!";
-		return __makeStake(_balance);
-	}
-	if (stake > getBalance(_balance)) {
-		std::cerr << "\nYou dont have enough money to make a stake! Try again!";
-		return __makeStake(_balance);
-	}
+void Player::__makeStake(Balance& _balance, int stake) {
 	__updateStake(stake);
 	updateBalance(_balance, -stake);
 }
 
-Player::Player(Deck& deck, std::string& name, Balance& _balance) {
+Player::Player(Deck& deck, std::string& name, Balance& _balance, int stake) {
 	setPlayerName(name);
-	__makeStake(_balance);
+	__makeStake(_balance, stake);
 	getPlayerCard(deck);
 	getPlayerCard(deck);
 	getPlayerHand();

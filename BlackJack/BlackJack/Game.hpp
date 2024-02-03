@@ -24,6 +24,9 @@ private:
 
 	int __currentSession = false;
 
+	int __dealerSession = 0;
+	int __playerSession = 0;
+
 	void setPlayerStatus(Status &player, Status statusType);
 	void setGameStatus(Game& _game, GameStatus statusType);
 
@@ -36,6 +39,8 @@ private:
 	bool __checkForAce(Game& _game);
 	void __balanceAce(Game& _game, bool& balanceNeed);
 
+	int __checkStake(Balance& _balance);
+
 	bool __balanceNeed = false;
 
 
@@ -46,11 +51,11 @@ public:
 
 	GameStatus __gameStatus = GameStatus::FINISHED;
 
-	GameStatus doActionPlayer(Game& _game);
+	GameStatus doActionPlayer(Game& _game, Balance& _balance);
 
-	GameStatus doActionDealer(Game& _game);
+	GameStatus doActionDealer(Game& _game, Balance& _balance);
 
-	GameStatus checkPlayersScores(Game& _game);
+	GameStatus checkPlayersScores(Game& _game, Balance& _balance);
 
 	void gameEnder(Game& _game, bool& _session, Balance& _balance);
 

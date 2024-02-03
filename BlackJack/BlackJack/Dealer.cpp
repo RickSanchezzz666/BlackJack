@@ -11,6 +11,13 @@ void Dealer::getDealerHand() {
 	}
 }
 
+void Dealer::getDealerInitialHand() {
+	std::cout << "\nDealer's hand:\n";
+	auto card = hand[0];
+	std::cout << "Card: " << card.name << " of " << card.suit << ". Cost: " << card.value << std::endl;
+	std::cout << "Card: Hidden. Cost: X" << std::endl;
+}
+
 void Dealer::updateDealerCount(int val) {
 	Game::updateHandCount(val, _scoreCounter);
 }
@@ -23,11 +30,16 @@ int Dealer::getDealerCount() {
 	return _scoreCounter;
 }
 
+int Dealer::getDealerInitialCount() {
+	auto card = hand[0];
+	return card.value;
+}
+
 Dealer::Dealer(Deck& deck){
 	getDealerCard(deck);
 	getDealerCard(deck);
-	getDealerHand();
-	std::cout << "Dealer's count: " << getDealerCount() << std::endl;
+	getDealerInitialHand();
+	std::cout << "Dealer's count: " << getDealerInitialCount() << std::endl;
 }
 
 void Dealer::getDealerCard(Deck& deck) {

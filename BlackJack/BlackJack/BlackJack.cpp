@@ -12,5 +12,5 @@ BlackJack::BlackJack() : _session(false) {
 void BlackJack::startBlackJackGame() {
 	Game game;
 	_game = game;
-	prepareGame(game, _session, _balance, _name);
+	prepareGame(game, _session, balance, _name);
 }
