@@ -1,0 +1,68 @@
+{
+  "deck": {
+    "cards_num": 52,
+    "cards": {
+      "2": [ "Two", "2", 2, 0 ],
+      "3": [ "Three", "3", 3, 0 ],
+      "4": [ "Four", "4", 4, 0 ],
+      "5": [ "Five", "5", 5, 0 ],
+      "6": [ "Six", "6", 6, 0 ],
+      "7": [ "Seven", "7", 7, 0 ],
+      "8": [ "Eight", "8", 8, 0 ],
+      "9": [ "Nine", "9", 9, 0 ],
+      "10": [ "Ten", "10", 10, 0 ],
+      "J": [ "Jack", "J", 10, 0 ],
+      "Q": [ "Queen", "Q", 10, 0 ],
+      "K": [ "King", "K", 10, 0 ],
+      "A": [ "Ace", "A", 11, 1 ]
+    },
+    "cards_suits": [ "Spades", "Hearts", "Clubs", "Diamonds" ]
+  },
+  "blackjack": {
+    "createGame": "true",
+    "addPlayer": "false",
+    "playerName": "true",
+    "sub-classes": {
+      "balance": {
+        "balance": "true"
+      },
+      "game": {
+        "gameClass": {
+          "getCards": "true",
+          "giveCards": "true",
+          "doubleDown": "true",
+          "stand": "true",
+          "hit": "true",
+          "split": "true",
+          "resetDeck": "true",
+          "deckInitialize": "true",
+          "sub-classes": {
+            "dealer": {
+              "cardsValuesCounter": "true",
+              "getCards": "true",
+              "giveCards": "true",
+              "doubleDown": "false",
+              "hit": "false",
+              "take": "true",
+              "split": "false"
+            },
+            "player": {
+              "balance": "true",
+              "cardsValuesCounter": "true",
+              "getCards": "true",
+              "giveCards": "false",
+              "doubleDown": "true",
+              "hit": "true",
+              "take": "true",
+              "split": "true"
+            }
+          }
+        }
+      }
+    }
+  },
+  "rules": {
+    "dealers_turn": "Keep hitting until HARD 16 or SOFT 17(1/11 - A)",
+    "overall": "An Ace will have a value of 11 unless that would give a player or the dealer a score in excess of 21; in which case, it has a value of 1."
+  }
+}
