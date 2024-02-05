@@ -3,7 +3,7 @@
 
 #include <string>
 
-class BlackJack : public Game {
+class BlackJack : protected Game {
 protected:
 	bool _session = false;
 	Game _game;

@@ -64,6 +64,10 @@ std::string Player::getPlayerName() {
 
 void Player::splitMove() {
 	if (addHand.empty()) {
+		if (hand[0].shortName == "A" && hand[1].shortName == "A") {
+			hand[0].value = 11;
+			hand[1].value = 11;
+		}
 		int val = hand[1].value;
 		addHand.push_back(hand[1]);
 		hand.pop_back();

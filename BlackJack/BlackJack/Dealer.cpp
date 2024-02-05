@@ -37,7 +37,6 @@ int Dealer::getDealerInitialCount() {
 
 Dealer::Dealer(Deck& deck){
 	getDealerCard(deck);
-	getDealerCard(deck);
 	getDealerInitialHand();
 	std::cout << "Dealer's count: " << getDealerInitialCount() << std::endl;
 }

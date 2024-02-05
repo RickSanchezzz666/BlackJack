@@ -313,6 +313,7 @@ GameStatus Game::startGame(Game& _game, bool& _session, Balance& _balance) {
 		__balanceAce(_game, _game.__balanceNeed);
 
 		if (_game.__gameStatus == GameStatus::PROGRESS) {
+			_game.__dealer.getDealerCard(__deck);
 			std::cout << "\nDealer's Turn:\n";
 			doActionDealer(_game, _balance);
 			__balanceAce(_game, _game.__balanceNeed);
@@ -343,30 +344,64 @@ void Game::gameEnder(Game& _game, bool& _session, Balance& _balance) {
 
 void Game::__endGameOutput(Game& _game, GameStatus status, Balance& _balance, bool split) {
 	using namespace std;
-	switch (status)
-	{
-	case GameStatus::DEALER_WIN:
-		cout << "\nThe Dealer Won! Dealer's score: " << _game.__dealer.getDealerCount();
-		cout << "\nPlayer's Score: " << _game.__player.getPlayerCount() << endl;
-		break;
-	case GameStatus::PLAYER_WIN:
-		cout << "\nThe Player Won! Player's Score: " << _game.__player.getPlayerCount();
-		cout << "\nDealer's score: " << _game.__dealer.getDealerCount() << endl;
+	if (split) {
 		if (split) {
-			float multiplier = 1.0f;
-			if (_game.__player.splitStatus[0] == SplitStatus::FIRST_WIN) multiplier += 0.5;
-			else if (_game.__player.splitStatus[1] == SplitStatus::SECOND_WIN) multiplier += 0.5;
-			_balance.updateBalance(_balance, _game.__player.playerStake * multiplier);
+			if (_game.__player.splitStatus[0] == SplitStatus::FIRST_BUST && _game.__player.splitStatus[1] == SplitStatus::SECOND_BUST) {
+				cout << "\nThe Dealer Won! Dealer's score: " << _game.__dealer.getDealerCount();
+				cout << "\nFirst hand lost! With score: " << _game.__player.getPlayerCount() << endl;
+				cout << "\nSecond hand lost! With score: " << _game.__player.getPlayerCount(true) << endl;
+			}
+			else {
+				float multiplier = 1.0f;
+				if (_game.__player.splitStatus[0] == SplitStatus::FIRST_WIN) {
+					if (_game.__player.getPlayerCount() == _game.__dealer.getDealerCount()) {
+						cout << "\nFirst hand ended in Tie! With score: " << _game.__player.getPlayerCount() << endl;
+					}
+					else {
+						cout << "\nFirst hand won! With score: " << _game.__player.getPlayerCount() << endl;
+						multiplier += 0.5;
+					}
+				}
+				else if (_game.__player.splitStatus[0] == SplitStatus::FIRST_BUST) {
+					cout << "\nFirst hand lost! With score: " << _game.__player.getPlayerCount() << endl;
+				}
+				if (_game.__player.splitStatus[1] == SplitStatus::SECOND_WIN) {
+					if (_game.__player.getPlayerCount(true) == _game.__dealer.getDealerCount()) {
+						cout << "\Second hand ended in Tie! With score: " << _game.__player.getPlayerCount(true) << endl;
+					}
+					else {
+						cout << "\nSecond hand won! With score: " << _game.__player.getPlayerCount(true) << endl;
+						multiplier += 0.5;
+					}
+				}
+				else if (_game.__player.splitStatus[1] == SplitStatus::SECOND_BUST) {
+					cout << "\nSecond hand lost! With score: " << _game.__player.getPlayerCount(true) << endl;
+				}
+				cout << "\nDealer's score: " << _game.__dealer.getDealerCount();
+				_balance.updateBalance(_balance, _game.__player.playerStake * multiplier);
+			}
 		}
-		else if (_game.__player.playerStatus != Status::BLACKJACK) _balance.updateBalance(_balance, _game.__player.playerStake * 2);
+	}
+	else {
+		switch (status)
+		{
+		case GameStatus::DEALER_WIN:
+			cout << "\nThe Dealer Won! Dealer's score: " << _game.__dealer.getDealerCount();
+			cout << "\nPlayer's Score: " << _game.__player.getPlayerCount() << endl;
+			break;
+		case GameStatus::PLAYER_WIN:
+			cout << "\nThe Player Won! Player's Score: " << _game.__player.getPlayerCount();
+			cout << "\nDealer's score: " << _game.__dealer.getDealerCount() << endl;
+			if (_game.__player.playerStatus != Status::BLACKJACK) _balance.updateBalance(_balance, _game.__player.playerStake * 2);
 		break;
-	case GameStatus::TIE:
-		cout << "\nGame ended in Tie! Dealer's score: " << _game.__dealer.getDealerCount();
-		cout << "\nPlayer's Score: " << _game.__player.getPlayerCount() << endl;
-		_balance.updateBalance(_balance, _game.__player.playerStake);
-		break;
-	default:
-		break;
+		case GameStatus::TIE:
+			cout << "\nGame ended in Tie! Dealer's score: " << _game.__dealer.getDealerCount();
+			cout << "\nPlayer's Score: " << _game.__player.getPlayerCount() << endl;
+			_balance.updateBalance(_balance, _game.__player.playerStake);
+			break;
+		default:
+			break;
+		}
 	}
 	cout << "\nYour balance is: " << _balance.getBalance(_balance) << endl;
 }
@@ -403,6 +438,10 @@ GameStatus Game::doActionPlayerSplit(Game& _game, Balance& _balance, int player,
 			_game.__playerSession++;
 			_game.__player.getPlayerHand();
 			cout << "Player: '" << _game.__player.getPlayerName() << "' First hand count: " << _game.__player.getPlayerCount() << endl;
+			if (_game.__player.getPlayerCount() > 21) {
+				cout << "\nPlayer's First hand Busted Out!" << endl;
+				return doActionPlayerSplit(_game, _balance, player + 1);
+			}
 			if (checkPlayersScores(_game, _balance, true) != GameStatus::PROGRESS) return doActionPlayerSplit(_game, _balance, player + 1);
 			else return doActionPlayerSplit(_game, _balance, player);
 		}
@@ -414,6 +453,10 @@ GameStatus Game::doActionPlayerSplit(Game& _game, Balance& _balance, int player,
 			_game.__playerSession++;
 			_game.__player.getPlayerAddHand();
 			cout << "Player: '" << _game.__player.getPlayerName() << "' Second hand count: " << _game.__player.getPlayerCount(true) << endl;
+			if (_game.__player.getPlayerCount(true) > 21) {
+				cout << "\nPlayer's Second hand Busted Out!" << endl;
+				return _game.__gameStatus;
+			}
 			if (checkPlayersScores(_game, _balance, true) != GameStatus::PROGRESS) return _game.__gameStatus;
 			else return doActionPlayerSplit(_game, _balance, player);
 		}
@@ -463,6 +506,8 @@ GameStatus Game::doActionPlayer(Game& _game, Balance& _balance, int action) {
 	}
 	case Actions::STAND:
 		cout << "You chose to stand!\n";
+		__checkForAce(_game);
+		__balanceAce(_game, _game.__balanceNeed);
 		break;
 	case Actions::DOUBLE_DOWN: {
 		if (!__checkStake(_game, _balance)) {
@@ -483,7 +528,7 @@ GameStatus Game::doActionPlayer(Game& _game, Balance& _balance, int action) {
 			return doActionPlayer(_game, _balance);
 		}
 		std::vector<Card> hand = _game.__player.getPlayerHand(true);
-		if (hand[0].value != hand[1].value) {
+		if (hand[0].value != hand[1].value && (hand[0].shortName != "A" && hand[1].shortName != "A")) {
 			cerr << "\nYou should have 2 equally vallued cards to split! Try again!";
 			return doActionPlayer(_game, _balance);
 		}
@@ -494,7 +539,9 @@ GameStatus Game::doActionPlayer(Game& _game, Balance& _balance, int action) {
 		_game.__player.splitMove();
 		doActionPlayerSplit(_game, _balance, 0);
 		_game.__player.getPlayerHand();
+		cout << "Player: '" << _game.__player.getPlayerName() << "' First hand count: " << _game.__player.getPlayerCount() << endl;
 		_game.__player.getPlayerAddHand();
+		cout << "Player: '" << _game.__player.getPlayerName() << "' Second hand count: " << _game.__player.getPlayerCount(true) << endl;
 		break;
 	}
 	default:
@@ -507,6 +554,8 @@ GameStatus Game::doActionPlayer(Game& _game, Balance& _balance, int action) {
 GameStatus Game::doActionDealer(Game& _game, Balance& _balance) {
 	using namespace std;
 	int action;
+	__checkForAce(_game);
+	__balanceAce(_game, _game.__balanceNeed);
 	short dealersCount = _game.__dealer.getDealerCount();
 	if (dealersCount == 17 && _game.__balanceNeed == true) {
 		for (auto& card : _game.__dealer.getDealerHand(true)) {
