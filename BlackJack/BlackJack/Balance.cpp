@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-Balance::Balance() : __balance(500) {}
-
 void Balance::resetBalance(Balance& balance) {
 	balance.__balance = 0;
 }

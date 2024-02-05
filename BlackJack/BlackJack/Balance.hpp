@@ -4,7 +4,8 @@ class Balance {
 private:
 	int __balance = 0;
 public:
-	Balance();
+	Balance() {};
+	Balance(int num) : __balance(num) {}
 
 	void resetBalance(Balance& balance);
 	const int getBalance(Balance& balance);
